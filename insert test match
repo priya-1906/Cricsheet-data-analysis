@@ -9,7 +9,7 @@ def insert_test_matches():
     files = os.listdir(folder_path)
 
     if not files:
-        print("⚠️ No files found in the tests folder.")
+        print("No files found in the tests folder.")
         return
 
     try:
@@ -71,14 +71,14 @@ def insert_test_matches():
         print("✅ Test match data inserted successfully.")
 
     except Error as e:
-        print(f"❌ Error: {e}")
+        print(f"Error: {e}")
 
     finally:
         if conn.is_connected():
             cursor.close()
             conn.close()
-            print("🔒 Database connection closed.")
+            print("Database connection closed.")
 
 if __name__ == "__main__":
-    print("📁 Starting insertion into test_matches...")
+    print("Starting insertion into test_matches...")
     insert_test_matches()
