@@ -1,0 +1,132 @@
+
+
+SELECT match_format, COUNT(*) AS total_matches
+FROM deliveries
+GROUP BY match_format;
+
+SELECT city, COUNT(*) AS matches_hosted
+FROM test_matches
+GROUP BY city
+ORDER BY matches_hosted DESC;
+
+SELECT toss_decision, COUNT(*) AS count
+FROM odi_matches
+GROUP BY toss_decision;
+
+SELECT venue, COUNT(*) AS match_count
+FROM test_matches
+GROUP BY venue
+ORDER BY match_count DESC
+LIMIT 5;
+
+
+SELECT winner, COUNT(*) AS wins
+FROM ipl_matches
+WHERE winner IS NOT NULL
+GROUP BY winner
+ORDER BY wins DESC
+LIMIT 5;
+
+
+SELECT bowler, COUNT(player_dismissed) AS wickets
+FROM deliveries
+WHERE player_dismissed IS NOT NULL
+GROUP BY bowler
+ORDER BY wickets DESC
+LIMIT 5;
+
+
+SELECT dismissal_kind, COUNT(*) AS count
+FROM deliveries
+WHERE dismissal_kind IS NOT NULL
+GROUP BY dismissal_kind
+ORDER BY count DESC;
+
+
+SELECT player_dismissed, COUNT(*) AS dismissals
+FROM deliveries
+WHERE player_dismissed IS NOT NULL
+GROUP BY player_dismissed
+ORDER BY dismissals DESC
+LIMIT 5;
+
+
+SELECT batsman, non_striker, COUNT(*) AS balls_faced_together
+FROM deliveries
+GROUP BY batsman, non_striker
+ORDER BY balls_faced_together DESC
+LIMIT 10;
+
+
+SELECT match_format, ROUND(AVG(runs_total), 2) AS avg_runs_per_ball
+FROM deliveries
+GROUP BY match_format;
+
+
+SELECT match_format, SUM(runs_extras) AS total_extras
+FROM deliveries
+GROUP BY match_format;
+
+SELECT match_format, SUM(runs_extras) AS total_extras
+FROM deliveries
+GROUP BY match_format;
+
+
+SELECT match_id, innings_number, overs, SUM(runs_total) AS total_runs
+FROM deliveries
+GROUP BY match_id, innings_number, overs
+ORDER BY total_runs DESC
+LIMIT 1;
+
+
+SELECT match_id, innings_number, COUNT(*) AS total_boundaries
+FROM deliveries
+WHERE runs_batsman IN (4, 6)
+GROUP BY match_id, innings_number
+ORDER BY total_boundaries DESC
+LIMIT 1;
+
+
+SELECT bowler, SUM(runs_total) AS runs_conceded
+FROM deliveries
+GROUP BY bowler
+ORDER BY runs_conceded DESC
+LIMIT 10;
+
+
+SELECT match_id, match_format, COUNT(*) AS delivery_count
+FROM deliveries
+GROUP BY match_id, match_format
+ORDER BY delivery_count DESC
+LIMIT 5;
+
+SELECT batsman, SUM(runs_batsman) AS total_runs
+FROM deliveries
+WHERE match_format = 'IPL'
+GROUP BY batsman
+ORDER BY total_runs DESC
+LIMIT 10;
+
+
+SELECT bowler, COUNT(*) AS dismissals
+FROM deliveries
+WHERE player_dismissed = 'V Kohli'
+GROUP BY bowler
+ORDER BY dismissals DESC
+LIMIT 3;
+
+
+SELECT fielder, COUNT(*) AS involvement
+FROM deliveries
+WHERE fielder IS NOT NULL
+GROUP BY fielder
+ORDER BY involvement DESC
+LIMIT 5;
+
+
+SELECT batsman, COUNT(*) AS sixes
+FROM deliveries
+WHERE runs_batsman = 6
+GROUP BY batsman
+ORDER BY sixes DESC
+LIMIT 10;
