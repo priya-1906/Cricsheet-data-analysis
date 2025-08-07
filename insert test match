@@ -1,0 +1,84 @@
+import os
+import json
+from datetime import datetime
+from mysql.connector import Error
+from db_connection import get_connection
+
+def insert_test_matches():
+    folder_path = "../cricsheet_json/tests"
+    files = os.listdir(folder_path)
+
+    if not files:
+        print("⚠️ No files found in the tests folder.")
+        return
+
+    try:
+        conn = get_connection()
+        cursor = conn.cursor()
+
+        for file_name in files:
+            if not file_name.endswith(".json"):
+                continue
+
+            file_path = os.path.join(folder_path, file_name)
+            with open(file_path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+
+            match_id = file_name.replace(".json", "")
+            info = data.get("info", {})
+
+            team1, team2 = info.get("teams", [None, None])
+            venue = info.get("venue")
+            city = info.get("city")
+            gender = info.get("gender")
+            match_type = info.get("match_type")
+            competition = info.get("competition", None)
+            result = info.get("outcome", {}).get("result", None)
+
+            # Outcome
+            outcome = info.get("outcome", {})
+            winner = outcome.get("winner", None)
+            win_by = outcome.get("by", {})
+            if isinstance(win_by, dict):
+                win_by = ", ".join([f"{k} {v}" for k, v in win_by.items()])
+            else:
+                win_by = ""
+
+            # Toss
+            toss_info = info.get("toss", {})
+            toss_winner = toss_info.get("winner", None)
+            toss_decision = toss_info.get("decision", None)
+
+            # Match date
+            date_list = info.get("dates", [])
+            match_date = datetime.strptime(date_list[0], "%Y-%m-%d").date() if date_list else None
+
+            # Insert
+            query = """
+                INSERT IGNORE INTO test_matches (
+                    match_id, match_date, venue, city, gender, match_type, competition,
+                    winner, win_by, team1, team2, toss_winner, toss_decision, result
+                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """
+            values = (
+                match_id, match_date, venue, city, gender, match_type, competition,
+                winner, win_by, team1, team2, toss_winner, toss_decision, result
+            )
+
+            cursor.execute(query, values)
+
+        conn.commit()
+        print("✅ Test match data inserted successfully.")
+
+    except Error as e:
+        print(f"❌ Error: {e}")
+
+    finally:
+        if conn.is_connected():
+            cursor.close()
+            conn.close()
+            print("🔒 Database connection closed.")
+
+if __name__ == "__main__":
+    print("📁 Starting insertion into test_matches...")
+    insert_test_matches()
