@@ -1,0 +1,121 @@
+
+import os
+import json
+import time
+from mysql.connector import Error
+from db_connection import get_connection
+
+def process_deliveries(folder_path, match_format):
+    files = os.listdir(folder_path)
+    total_inserted = 0
+    total_skipped = 0
+
+    try:
+        conn = get_connection()
+        cursor = conn.cursor()
+
+        for file in files:
+            if not file.endswith(".json"):
+                continue
+
+            inserted_count = 0
+            skipped_count = 0
+
+            match_id = file.replace(".json", "")
+            file_path = os.path.join(folder_path, file)
+
+            with open(file_path, "r", encoding="utf-8") as f:
+                try:
+                    data = json.load(f)
+                except json.JSONDecodeError:
+                    print(f" Skipping {file}: Invalid JSON")
+                    continue
+
+            innings_data = data.get("innings", [])
+            for innings_number, innings_info in enumerate(innings_data, start=1):
+                if not isinstance(innings_info, dict):
+                    print(f" Skipping malformed innings in {file}")
+                    continue
+
+                team_name = innings_info.get("team")
+                overs_data = innings_info.get("overs", [])
+                if not isinstance(overs_data, list):
+                    print(f" Skipping malformed overs in {file}")
+                    continue
+
+                for over_data in overs_data:
+                    over = over_data.get("over")
+                    deliveries = over_data.get("deliveries", [])
+
+                    for ball_index, ball_info in enumerate(deliveries):
+                        if not isinstance(ball_info, dict):
+                            skipped_count += 1
+                            continue
+
+                        batsman = ball_info.get("batter")
+                        bowler = ball_info.get("bowler")
+                        non_striker = ball_info.get("non_striker")
+
+                        runs = ball_info.get("runs", {})
+                        runs_batsman = runs.get("batter", 0)
+                        runs_extras = runs.get("extras", 0)
+                        runs_total = runs.get("total", 0)
+
+                        dismissal = ball_info.get("wickets", [])
+                        dismissal_kind = player_dismissed = fielder = None
+                        if dismissal:
+                            dismissal_kind = dismissal[0].get("kind")
+                            player_dismissed = dismissal[0].get("player_out")
+                            fielders = dismissal[0].get("fielders", [])
+                            if fielders:
+                                fielder = fielders[0].get("name")
+
+                        values = (
+                            match_id, match_format, innings_number, over, ball_index + 1,
+                            batsman, bowler, non_striker,
+                            runs_batsman, runs_extras, runs_total,
+                            dismissal_kind, player_dismissed, fielder
+                        )
+
+                        try:
+                            cursor.execute("""
+                                INSERT INTO deliveries (
+                                    match_id, match_format, innings_number, overs, ball,
+                                    batsman, bowler, non_striker,
+                                    runs_batsman, runs_extras, runs_total,
+                                    dismissal_kind, player_dismissed, fielder
+                                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                            """, values)
+                            inserted_count += 1
+                        except Error as e:
+                            print(f" Insert Error in {file}: {e}")
+                            skipped_count += 1
+
+            conn.commit()
+            time.sleep(0.5)
+
+            total_inserted += inserted_count
+            total_skipped += skipped_count
+
+            print(f" Processed file: {file} | Inserted: {inserted_count} | Skipped: {skipped_count}")
+
+        print(f" Total inserted for {match_format}: {total_inserted}")
+        print(f" Total skipped: {total_skipped}")
+
+    except Error as e:
+        print(f" DB Error: {e}")
+
+    finally:
+        if conn.is_connected():
+            cursor.close()
+            conn.close()
+            print(f" Database connection closed for {match_format} matches.")
+
+if __name__ == "__main__":
+    formats = {{
+        "IPL": "../cricsheet_json/ipl"
+    }}
+
+    for format_type, path in formats.items():
+        print(f" Starting delivery insertion for {format_type} matches...")
+        process_deliveries(path, format_type)
