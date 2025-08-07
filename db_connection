@@ -1,0 +1,9 @@
+import mysql.connector
+
+def get_connection():
+    return mysql.connector.connect(
+        host="gateway01.ap-southeast-1.prod.aws.tidbcloud.com",
+        user="2VNJytV9sTN2QFc.root",
+        password="9RON9MkIJpQMCsbE",
+        database="Cricsheet_Matches"
+    )
