@@ -1,0 +1,49 @@
+import os
+import json
+from mysql.connector import Error
+from db_connection import get_connection
+
+def extract_players_from_folder(folder_path):
+    players = set()
+    for file_name in os.listdir(folder_path):
+        if file_name.endswith(".json"):
+            file_path = os.path.join(folder_path, file_name)
+            with open(file_path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                match_players = data.get("info", {}).get("players", {})
+                for team_players in match_players.values():
+                    players.update(team_players)
+    return players
+
+def insert_players():
+    base_path = "../cricsheet_json"
+    folders = ["tests", "odis", "t20s", "ipl"]
+    unique_players = set()
+
+    for folder in folders:
+        folder_path = os.path.join(base_path, folder)
+        unique_players.update(extract_players_from_folder(folder_path))
+
+    print(f"🧍 Total unique players: {len(unique_players)}")
+
+    try:
+        conn = get_connection()
+        cursor = conn.cursor()
+
+        for player in unique_players:
+            query = "INSERT IGNORE INTO players (player_name) VALUES (%s)"
+            cursor.execute(query, (player,))
+
+        conn.commit()
+        print("Data inserted into players table successfully.")
+    except Error as e:
+        print(f"Error: {e}")
+    finally:
+        if conn.is_connected():
+            cursor.close()
+            conn.close()
+            print("Database connection closed.")
+
+if __name__ == "__main__":
+    print("Starting player insertion...")
+    insert_players()
