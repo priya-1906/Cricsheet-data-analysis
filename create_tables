@@ -1,0 +1,72 @@
+Create database Cricsheet_Matches;
+
+CREATE TABLE test_matches (
+    match_id VARCHAR(100) PRIMARY KEY,
+    match_date DATE,
+    venue VARCHAR(255),
+    team1 VARCHAR(100),
+    team2 VARCHAR(100),
+    toss_winner VARCHAR(100),
+    toss_decision VARCHAR(10),
+    result VARCHAR(50)
+);
+
+CREATE TABLE odi_matches (
+    match_id VARCHAR(100) PRIMARY KEY,
+    match_date DATE,
+    venue VARCHAR(255),
+    team1 VARCHAR(100),
+    team2 VARCHAR(100),
+    toss_winner VARCHAR(100),
+    toss_decision VARCHAR(10),
+    result VARCHAR(50)
+);
+
+CREATE TABLE t20_matches (
+    match_id VARCHAR(100) PRIMARY KEY,
+    match_date DATE,
+    venue VARCHAR(255),
+    team1 VARCHAR(100),
+    team2 VARCHAR(100),
+    toss_winner VARCHAR(100),
+    toss_decision VARCHAR(10),
+    result VARCHAR(50)
+);
+
+USE Cricsheet_Matches;
+
+CREATE TABLE ipl_matches (
+    match_id VARCHAR(100) PRIMARY KEY,
+    match_date DATE,
+    venue VARCHAR(255),
+    team1 VARCHAR(100),
+    team2 VARCHAR(100),
+    toss_winner VARCHAR(100),
+    toss_decision VARCHAR(10),
+    result VARCHAR(50)
+);
+
+CREATE TABLE players (
+    player_id INT AUTO_INCREMENT PRIMARY KEY,
+    player_name VARCHAR(100),
+    role VARCHAR(50),
+    team VARCHAR(100)
+);
+
+CREATE TABLE deliveries (
+    delivery_id INT AUTO_INCREMENT PRIMARY KEY,
+    match_id VARCHAR(100),
+    match_format ENUM('Test', 'ODI', 'T20', 'IPL'),
+    innings_number INT,
+    overs INT,
+    ball INT,
+    batsman VARCHAR(100),
+    bowler VARCHAR(100),
+    non_striker VARCHAR(100),
+    runs_batsman INT,
+    runs_extras INT,
+    runs_total INT,
+    dismissal_kind VARCHAR(50),
+    player_dismissed VARCHAR(100),
+    fielder VARCHAR(100)
+);
