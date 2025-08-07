@@ -1,0 +1,71 @@
+import os
+import requests
+
+# Step 1: Folder to store downloaded ZIP files
+zip_folder_path = "../cricsheet_json/zips"
+os.makedirs(zip_folder_path, exist_ok=True)
+print(f"ZIP folder ready: {zip_folder_path}")
+########################################################################################3
+# Step 2: Folder to extract JSON files
+base_extract_folder = "../cricsheet_json"
+os.makedirs(base_extract_folder, exist_ok=True)
+
+for folder in ["tests", "odis", "t20s", "ipl"]:
+    path = os.path.join(base_extract_folder, folder)
+    os.makedirs(path, exist_ok=True)
+    print(f"Extract folder ready: {path}")
+############################################################################################3
+
+# Step 3: Download each ZIP file into the zip folder
+download_links = {
+    "tests": "https://cricsheet.org/downloads/tests_json.zip",
+    "odis": "https://cricsheet.org/downloads/odis_json.zip",
+    "t20s": "https://cricsheet.org/downloads/t20s_json.zip",
+    "ipl": "https://cricsheet.org/downloads/ipl_json.zip"
+}
+
+for match_type, url in download_links.items():
+    zip_path = os.path.join(zip_folder_path, f"{match_type}_json.zip")
+
+    print(f" Downloading {match_type.upper()}...")
+    response = requests.get(url)
+
+    with open(zip_path, "wb") as f:
+        f.write(response.content)
+
+    print(f"Downloaded: {zip_path}")
+
+###########3#########################################################
+
+import os
+import zipfile
+
+# Define folders
+base_path = "../cricsheet_json"
+zip_folder = os.path.join(base_path, "zips")
+
+extract_paths = {
+    "tests": "tests_json.zip",
+    "odis": "odis_json.zip",
+    "t20s": "t20s_json.zip",
+    "ipl": "ipl_json.zip"
+}
+
+# Extract each zip to its respective folder
+for match_type, zip_file in extract_paths.items():
+    zip_path = os.path.join(zip_folder, zip_file)
+    output_folder = os.path.join(base_path, match_type)
+
+    # Create output folder if it doesn't exist
+    os.makedirs(output_folder, exist_ok=True)
+
+    # Extract
+    with zipfile.ZipFile(zip_path, "r") as zip_ref:
+        zip_ref.extractall(output_folder)
+    
+    print(f" Extracted {zip_file} to {output_folder}")
+
+####################################################################################
+from db_connection import get_connection  
+
+#######################################################################################
