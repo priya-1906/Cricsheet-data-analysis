@@ -1,0 +1,130 @@
+import pymysql
+import pandas as pd
+
+conn = pymysql.connect(
+    host="gateway01.ap-southeast-1.prod.aws.tidbcloud.com",
+    port=4000,
+        user="2VNJytV9sTN2QFc.root",
+        password="9RON9MkIJpQMCsbE",
+        database="Cricsheet_Matches",
+    ssl={"fake_flag_to_enable_tls": True}  # TiDB Cloud uses SSL
+)
+----------------------------------------------
+#1) Distribution of Match Formats
+This chart shows how many deliveries (balls bowled) occurred in each cricket match format (Test, ODI, T20, IPL).##
+-----------------------------------------------
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+sns.countplot(x='match_format', data=deliveries)
+plt.title('Distribution of Match Formats')
+plt.xlabel('Match Format')
+plt.ylabel('Number of Deliveries')
+plt.show()
+----------------------------------------------
+#2) Top 10 Run Scorers
+This bar chart displays the top 10 batsmen based on the total runs they have scored across all match formats in the dataset.##
+-----------------------------------------------
+top_batsmen = deliveries.groupby('batsman')['runs_batsman'].sum().sort_values(ascending=False).head(10)
+
+top_batsmen.plot(kind='bar', color='skyblue')
+plt.title("Top 10 Run Scorers")
+plt.ylabel("Total Runs")
+plt.xticks(rotation=45)
+plt.show()
+----------------------------------------------
+#3) Top 10 Wicket-Takers
+This bar chart highlights the bowlers who have taken the highest number of wickets.
+It provides insight into which bowlers have been most effective at dismissing batsmen.##
+-----------------------------------------------
+wickets = deliveries[deliveries['player_dismissed'].notnull()]
+top_bowlers = wickets.groupby('bowler').size().sort_values(ascending=False).head(10)
+
+top_bowlers.plot(kind='bar', color='orange')
+plt.title("Top 10 Wicket Takers")
+plt.ylabel("Wickets")
+plt.xticks(rotation=45)
+plt.show()
+----------------------------------------------
+#4) Dismissal Types Distribution
+This count plot shows the frequency of different types of dismissals (e.g., bowled, caught, LBW, run out).
+It helps us understand the most common ways batsmen get out.##
+-----------------------------------------------
+
+dismissals = deliveries['dismissal_kind'].value_counts()
+
+sns.barplot(x=dismissals.index, y=dismissals.values)
+plt.title("Dismissal Types Distribution")
+plt.xlabel("Dismissal Kind")
+plt.ylabel("Count")
+plt.xticks(rotation=45)
+plt.show()
+
+----------------------------------------------
+#5) Total Extras by Match Format
+This bar chart shows the total number of extra runs given in each match format (Test, ODI, T20, IPL).
+It helps us compare which formats tend to have more extras conceded.##
+-----------------------------------------------
+extras_by_format = deliveries.groupby('match_format')['runs_extras'].sum()
+
+extras_by_format.plot(kind='bar', color='lightgreen')
+plt.title("Total Extras by Match Format")
+plt.ylabel("Extras")
+plt.xlabel("Match Format")
+plt.show()
+----------------------------------------------
+#6) Distribution of Runs per Delivery
+This histogram shows how runs are distributed across all deliveries.
+It counts how many times a delivery resulted in 0, 1, 2, 3, 4, or 6 runs.##
+-----------------------------------------------
+sns.histplot(deliveries['runs_total'], bins=8, kde=True)
+plt.title("Distribution of Runs per Delivery")
+plt.xlabel("Runs")
+plt.ylabel("Frequency")
+plt.show()
+----------------------------------------------
+#7) Top 10 Most Dismissed Players"
+This bar chart displays the players who have been dismissed the most times in the dataset##
+-----------------------------------------------
+top_dismissed = deliveries[deliveries['player_dismissed'].notnull()]
+top_dismissed = top_dismissed['player_dismissed'].value_counts().head(10)
+
+top_dismissed.plot(kind='bar', color='crimson')
+plt.title("Top 10 Most Dismissed Players")
+plt.ylabel("Dismissals")
+plt.xticks(rotation=45)
+plt.show()
+----------------------------------------------
+#8) Top 10 Batsman Partnerships by Balls Faced"
+This bar chart shows the top 10 batting partnerships based on the number of balls faced together.##
+-----------------------------------------------
+partnerships = deliveries.groupby(['batsman', 'non_striker']).size().sort_values(ascending=False).head(10)
+
+partnerships.plot(kind='bar', figsize=(12,5))
+plt.title("Top 10 Batsman Partnerships by Balls Faced")
+plt.ylabel("Balls Together")
+plt.xticks(rotation=45)
+plt.show()
+----------------------------------------------
+#9) Run Distribution by Match Format"
+This pie chart represents the percentage of total runs scored across different match formats (Test, ODI, T20, IPL)##
+-----------------------------------------------
+runs_by_format = deliveries.groupby('match_format')['runs_total'].sum()
+
+runs_by_format.plot(kind='pie', autopct='%1.1f%%', figsize=(6,6))
+plt.title("Run Distribution by Match Format")
+plt.ylabel("")
+plt.show()
+
+----------------------------------------------
+#10) Heatmap: Runs by Format and Innings"
+This heatmap displays the total runs scored across different match formats (Test, ODI, T20, IPL) and innings numbers.##
+-----------------------------------------------
+heat_data = deliveries.groupby(['match_format', 'innings_number'])['runs_total'].sum().unstack().fillna(0)
+
+sns.heatmap(heat_data, annot=True, cmap="YlGnBu", fmt='.0f')
+plt.title("Heatmap: Runs by Format and Innings")
+plt.xlabel("Innings Number")
+plt.ylabel("Match Format")
+plt.show()
+
