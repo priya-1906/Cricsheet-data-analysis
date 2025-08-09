@@ -1,69 +1,61 @@
-**Cricsheet Match Data Analysis Project**
-A sports analytics project that processes cricket match data from Cricsheet in JSON format, stores it in a SQL database, and provides analytical insights using SQL, Python (EDA), and Power BI.
-
 **Project Overview**
-
-This project is based on cricket match data collected from the Cricsheet website.
-The aim is to download match data for Test, ODI, T20, and IPL formats, store it in a SQL database, and perform analysis using SQL queries, Python EDA, and Power BI dashboards.
+This project uses cricket match data collected from the Cricsheet website.
+The goal is to download match data for Test, ODI, T20, and IPL formats, store it in a SQL database, and perform analysis through SQL queries, Python EDA, and interactive dashboards in Power BI.
 
 **Objectives**
+>Collect cricket match data in JSON format from Cricsheet.
+>Convert the data into structured Pandas DataFrames.
+>Store the data in MySQL/TiDB database tables.
+>Write SQL queries to generate meaningful insights.
+>Perform Exploratory Data Analysis (EDA) using Python visualization libraries.
+>Build interactive Power BI dashboards for visual storytelling and decision-making.
 
-Collect cricket match data in JSON format from Cricsheet.
-Convert the data into structured Pandas DataFrames.
-Store the data in MySQL/TiDB database tables.
-Write SQL queries to get meaningful insights.
-Perform EDA using Python visualization libraries.
-Create interactive dashboards in Power BI.
+**Technologies Used**
+Languages: Python, SQL
+Database: MySQL / TiDB
+Libraries: Pandas, JSON, Matplotlib, Seaborn, Plotly
+Tools: MySQL Workbench, Power BI, Visual Studio
 
-**Technologies used:**
-
-- **Languages:** Python, SQL
-- **Database:** MySQL / TiDB
-- **Libraries:** Pandas, JSON, Matplotlib, Seaborn, Plotly
-- **Tools:** MySQL Workbench, Power BI, Visual Studio
-
-**Project Steps:**
--Data Collection
+**Project Workflow**
+>Data Collection
 Download JSON files for Test, ODI, T20, and IPL matches from Cricsheet.
 
--Data Processing
-Convert JSON data to Pandas DataFrames and handle missing values.
+>Data Processing
+Convert JSON data to Pandas DataFrames.
+Handle missing/null values.
 
--Database Creation
-Create separate tables in SQL for each match format and other required entities.
+>Database Creation
+Create separate SQL tables for each match format (test_matches, odi_matches, t20_matches, ipl_matches) and a deliveries table for ball-by-ball data.
 
--Data Insertion
+>Data Insertion
 Insert processed data into the database using Python scripts.
 
--SQL Analysis
-Write 20 analytical queries for different insights.
+>SQL Analysis
+Write and execute 20 analytical queries for cricket statistics and trends.
 
--EDA using Python
-Use Matplotlib, Seaborn, and Plotly to create visual charts.
+>EDA using Python
+Use Matplotlib, Seaborn, and Plotly for visual insights such as run distribution, dismissal types, win margins, and team comparisons.
 
--Power BI Dashboard
-Connect SQL database to Power BI and create an interactive dashboard.
+>Power BI Dashboard
+Connect SQL database / exported CSV files to Power BI.
+Create interactive dashboards with filters for Format, Team, and Year.
+Visuals include:
+  -Total Matches by Format & Year
+  -Top Run Scorers
+  -Top Wicket Takers
+  -Venue Analysis
+  -Toss Decision vs Match Result
 
--Deliverables
-SQL database with match and delivery-level data
+**Python EDA**
+Run: eda/eda_analysis.ipynb
+Tools: Matplotlib, Seaborn, Plotly
+Plots: Run distribution, dismissal types, win margins, team performance comparisons.
 
--20 SQL queries with results
-
--Python EDA with multiple charts
-
--Power BI dashboard
-
--Project documentation
-
-**Python EDA:**
-
-- Run: `eda/eda_analysis.ipynb`
-- Tools: Matplotlib, Seaborn, Plotly
-- Plots: Run distribution, dismissal types, win margins, team comparison
-
-**Power BI**
-
-- File: `powerbi/cricsheet_dashboard.pbix`
-- Interactive: Filters for format, team, year
-- Graphs: Bar, line, pie charts for KPIs
-
+**Power BI Dashboard**
+File: powerbi/cricsheet_dashboard.pbix
+Export: PDF version for sharing: powerbi/cricsheet_dashboard.pdf
+Features:
+  -Filters: Format, Team, Year
+  -Graph Types: Bar, Line, Pie, KPI Cards
+  -Interactive drill-down by format and player
+  -Relationship between matches and deliveries for detailed ball-by-ball insights
