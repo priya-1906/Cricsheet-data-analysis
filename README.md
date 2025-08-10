@@ -30,6 +30,13 @@ Create separate SQL tables for each match format (test_matches, odi_matches, t20
 >Data Insertion:
 Insert processed data into the database using Python scripts.
 
+>Null Value Handling
+
+If a field is missing in the JSON, it is stored as NULL in the database.
+Python’s .get() method with default None ensures no KeyError occurs during parsing.
+SQL tables are defined to accept NULL values, preserving data integrity.
+During analysis, SQL functions (e.g., IFNULL, COALESCE) or Python Pandas methods handle NULL values as needed.
+
 >SQL Analysis:
 Write and execute 20 analytical queries for cricket statistics and trends.
 
@@ -38,20 +45,26 @@ Use Matplotlib, Seaborn, and Plotly for visual insights such as run distribution
 
 >Power BI Dashboard:
 Connect SQL database / exported CSV files to Power BI.
-Create interactive dashboards with filters for Format, Team, and Year.
-Visuals include:
-  -Total Matches by Format & Year
-  -Matches Hosted by City
-  -Toss Decision Distribution
-  -Win by Type Distribution
-  -Matches Played Over the Years (Line Chart)
-  -Matches by Venue
-  -Matches Played by Format (Stacked Area Chart)
+Create interactive dashboards with filters for Format, Team, and Year.x
 
 **Python EDA**
 Run: eda/eda_analysis.ipynb
 Tools: Matplotlib, Seaborn, Plotly
 Plots: Run distribution, dismissal types, win margins, team performance comparisons.
+
+**Power BI Dashboard**
+Run: powerbi/cricsheet_dashboard.pbix
+Tools: Power BI Desktop
+Visuals: Interactive charts and filters for exploring match statistics. Includes:
+
+-Total Matches by Format & Year – Clustered column chart showing match count trends.
+-Matches Hosted by City – Bar chart for top hosting cities.
+-Toss Decision Distribution – Pie chart showing batting vs. fielding decisions.
+-Win by Type Distribution – Donut chart for wins by runs vs. wickets.
+-Matches Played Over the Years – Line chart showing growth in matches.
+-Matches by Venue – Horizontal bar chart for popular venues.
+-Matches Played by Format – Stacked area chart showing format-wise match share.
+-Filters/Slicers – By Format, Team, and Year for detailed exploration.
 
 **Insights from the Analysis**
 >Match Growth: Matches have steadily increased over the years, with a sharp rise after 2018.
