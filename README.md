@@ -17,45 +17,45 @@ Libraries: Pandas, JSON, Matplotlib, Seaborn, Plotly
 Tools: MySQL Workbench, Power BI, Visual Studio
 
 **Project Workflow**
->Data Collection
+>Data Collection:
 Download JSON files for Test, ODI, T20, and IPL matches from Cricsheet.
 
->Data Processing
+>Data Processing:
 Convert JSON data to Pandas DataFrames.
 Handle missing/null values.
 
->Database Creation
+>Database Creation:
 Create separate SQL tables for each match format (test_matches, odi_matches, t20_matches, ipl_matches) and a deliveries table for ball-by-ball data.
 
->Data Insertion
+>Data Insertion:
 Insert processed data into the database using Python scripts.
 
->SQL Analysis
+>SQL Analysis:
 Write and execute 20 analytical queries for cricket statistics and trends.
 
->EDA using Python
+>EDA using Python:
 Use Matplotlib, Seaborn, and Plotly for visual insights such as run distribution, dismissal types, win margins, and team comparisons.
 
->Power BI Dashboard
+>Power BI Dashboard:
 Connect SQL database / exported CSV files to Power BI.
 Create interactive dashboards with filters for Format, Team, and Year.
 Visuals include:
   -Total Matches by Format & Year
-  -Top Run Scorers
-  -Top Wicket Takers
-  -Venue Analysis
-  -Toss Decision vs Match Result
+  -Matches Hosted by City
+  -Toss Decision Distribution
+  -Win by Type Distribution
+  -Matches Played Over the Years (Line Chart)
+  -Matches by Venue
+  -Matches Played by Format (Stacked Area Chart)
 
 **Python EDA**
 Run: eda/eda_analysis.ipynb
 Tools: Matplotlib, Seaborn, Plotly
 Plots: Run distribution, dismissal types, win margins, team performance comparisons.
 
-**Power BI Dashboard**
-File: powerbi/cricsheet_dashboard.pbix
-Export: PDF version for sharing: powerbi/cricsheet_dashboard.pdf
-Features:
-  -Filters: Format, Team, Year
-  -Graph Types: Bar, Line, Pie, KPI Cards
-  -Interactive drill-down by format and player
-  -Relationship between matches and deliveries for detailed ball-by-ball insights
+**Insights from the Analysis**
+>Match Growth: Matches have steadily increased over the years, with a sharp rise after 2018.
+>Top Cities Hosting Matches: Mumbai, Dubai, and Colombo host the highest number of matches.
+>Toss Decision Trends: Teams slightly prefer fielding over batting after winning the toss.
+>Winning Patterns: Most wins are by wickets (chasing) rather than runs (defending).
+>Format Popularity: IPL matches have increased significantly in recent years, with T20s also growing steadily.
