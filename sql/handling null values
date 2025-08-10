@@ -1,0 +1,37 @@
+
+##Identify NULL values in key columns##
+SELECT COUNT(*) AS null_city_count
+FROM test_matches
+WHERE city IS NULL;
+
+SELECT COUNT(*) AS null_winner_count
+FROM odi_matches
+WHERE winner IS NULL;
+
+SELECT COUNT(*) AS null_venue_count
+FROM t20_matches
+WHERE venue IS NULL;
+
+SELECT COUNT(*) AS null_toss_winner_count
+FROM ipl_matches
+WHERE toss_winner IS NULL;
+
+##Handle NULLs by replacing with default values using COALESCE##
+SELECT COALESCE(city, 'Unknown City') AS city_name,
+       COUNT(*) AS matches_hosted
+FROM test_matches
+GROUP BY city_name;
+
+SELECT COALESCE(winner, 'No Result') AS match_winner,
+       COUNT(*) AS total_matches
+FROM odi_matches
+GROUP BY match_winner;
+
+##Filter out NULLs when they are not acceptable in analysis##
+SELECT *
+FROM t20_matches
+WHERE venue IS NOT NULL;
+
+SELECT *
+FROM ipl_matches
+WHERE toss_winner IS NOT NULL;
