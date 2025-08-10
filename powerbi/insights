@@ -1,0 +1,60 @@
+# Cricsheet Match Data – Key Insights
+
+## 1. Matches Hosted by City
+- **Top city:** *Unknown* (537 matches) — likely due to incomplete or missing location records in historical datasets.
+- **Leading known hosts:**
+  - Mumbai – 249
+  - Kigali City – 237
+  - Colombo – 234
+  - Dubai – 207
+  - Abu Dhabi – 192
+  - Kuala Lumpur – 190
+  - London – 183
+  - Al Amarat – 169
+- Shows a mix of traditional cricket hubs (Mumbai, Colombo, London) and emerging venues (Kigali City, Al Amarat).
+
+---
+
+## 2. Toss Decision Distribution
+- **Field first:** 51.77%
+- **Bat first:** 48.23%
+- Very balanced overall — indicates no overwhelming global trend; teams adapt their choice to pitch conditions, opposition, and format.
+
+---
+
+## 3. Matches per Venue by Format
+- Most active venues:
+  - Dubai International Stadium – 214 matches
+  - Harare Sports Club – 198
+  - Sher-e-Bangla National Cricket Stadium – 136
+  - Al Amerat Cricket Ground – 129
+  - Sharjah Cricket Stadium – 116
+- Venue specialization is evident — some host primarily T20/ODI matches, others are more Test or domestic-league focused.
+
+---
+
+## 4. Matches Played Over the Years
+- Sharp **increase post-2008** — coinciding with the rise of T20 leagues (especially IPL).
+- **Peak year:** Over 1,200 matches recorded.
+- Noticeable spikes align with ICC tournament cycles and domestic league seasons.
+
+---
+
+## 5. Matches by Format Over Time
+- **T20 & IPL:** Rapid growth since late 2000s, with IPL peaking mid-2010s.
+- **ODIs:** Fairly stable volumes with spikes during major tournaments.
+- **Tests:** Relatively stable but significantly fewer matches compared to limited-overs formats.
+
+---
+
+## 6. Win by Type Distribution
+- **Wins by wickets** dominate:
+  - 7 wickets – 8.37%
+  - 6 wickets – 7.72%
+  - 8 wickets – 7.33%
+- **Wins by runs** are much less common — e.g., 13-run wins occur in only ~0.64% of matches.
+- Indicates that chasing teams have a statistical advantage, especially in limited-overs formats.
+
+---
+
+
