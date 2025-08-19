@@ -130,3 +130,14 @@ WHERE runs_batsman = 6
 GROUP BY batsman
 ORDER BY sixes DESC
 LIMIT 10;
+
+SELECT batsman,
+       COUNT(*) AS balls_faced,
+       SUM(runs_batsman) AS total_runs,
+       ROUND(SUM(runs_batsman) * 100.0 / COUNT(*), 2) AS strike_rate
+FROM deliveries
+GROUP BY batsman
+HAVING COUNT(*) >= 200
+ORDER BY strike_rate DESC
+LIMIT 10;
+
