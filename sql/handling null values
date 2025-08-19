@@ -27,11 +27,3 @@ SELECT COALESCE(winner, 'No Result') AS match_winner,
 FROM odi_matches
 GROUP BY match_winner;
 
-##Filter out NULLs when they are not acceptable in analysis##
-SELECT *
-FROM t20_matches
-WHERE venue IS NOT NULL;
-
-SELECT *
-FROM ipl_matches
-WHERE toss_winner IS NOT NULL;
