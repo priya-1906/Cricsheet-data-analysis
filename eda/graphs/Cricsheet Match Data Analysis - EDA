@@ -25,25 +25,41 @@ plt.show()
 #2) Top 10 Run Scorers
 This bar chart displays the top 10 batsmen based on the total runs they have scored across all match formats in the dataset.##
 -----------------------------------------------
-top_batsmen = deliveries.groupby('batsman')['runs_batsman'].sum().sort_values(ascending=False).head(10)
+top_batsmen = (
+    deliveries.groupby('batsman')['runs_batsman']
+    .sum()
+    .sort_values(ascending=False)
+    .head(10)
+    .reset_index()
+)
 
-top_batsmen.plot(kind='bar', color='skyblue')
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(10, 6))
+sns.barplot(x='batsman', y='runs_batsman', data=top_batsmen, color='skyblue')
 plt.title("Top 10 Run Scorers")
 plt.ylabel("Total Runs")
+plt.xlabel("Batsman")
 plt.xticks(rotation=45)
+plt.tight_layout()
+plt.savefig("Top_10_Scorers.png")
 plt.show()
+
 ----------------------------------------------
 #3) Top 10 Wicket-Takers
 This bar chart highlights the bowlers who have taken the highest number of wickets.
 It provides insight into which bowlers have been most effective at dismissing batsmen.##
 -----------------------------------------------
-wickets = deliveries[deliveries['player_dismissed'].notnull()]
-top_bowlers = wickets.groupby('bowler').size().sort_values(ascending=False).head(10)
+import seaborn as sns
+plt.figure(figsize=(10, 6))
 
-top_bowlers.plot(kind='bar', color='orange')
+sns.barplot(x=top_bowlers.values, y=top_bowlers.index, palette='Oranges_r')
 plt.title("Top 10 Wicket Takers")
-plt.ylabel("Wickets")
-plt.xticks(rotation=45)
+plt.xlabel("Wickets")
+plt.ylabel("Bowler")
+plt.tight_layout()
+plt.savefig("top_10_wicket_takers_hbar.png")
 plt.show()
 ----------------------------------------------
 #4) Dismissal Types Distribution
@@ -83,27 +99,43 @@ plt.xlabel("Runs")
 plt.ylabel("Frequency")
 plt.show()
 ----------------------------------------------
-#7) Top 10 Most Dismissed Players"
-This bar chart displays the players who have been dismissed the most times in the dataset##
+#7) Runs Scored by Position in Over"
+Analyze whether runs increase in the first few balls or last few of the over.##
 -----------------------------------------------
-top_dismissed = deliveries[deliveries['player_dismissed'].notnull()]
-top_dismissed = top_dismissed['player_dismissed'].value_counts().head(10)
-
-top_dismissed.plot(kind='bar', color='crimson')
-plt.title("Top 10 Most Dismissed Players")
-plt.ylabel("Dismissals")
-plt.xticks(rotation=45)
+plt.figure(figsize=(10, 6))
+sns.swarmplot(x='ball', y='runs_total', data=deliveries.sample(1000), size=3)
+plt.title("Run Distribution by Ball Number in Over")
+plt.xlabel("Ball in Over")
+plt.ylabel("Runs")
+plt.tight_layout()
+plt.savefig("run_by_ball_position.png")
 plt.show()
 ----------------------------------------------
 #8) Top 10 Batsman Partnerships by Balls Faced"
 This bar chart shows the top 10 batting partnerships based on the number of balls faced together.##
 -----------------------------------------------
-partnerships = deliveries.groupby(['batsman', 'non_striker']).size().sort_values(ascending=False).head(10)
+import seaborn as sns
+import matplotlib.pyplot as plt
 
-partnerships.plot(kind='bar', figsize=(12,5))
+partnerships = (
+    deliveries.groupby(['batsman', 'non_striker'])
+    .size()
+    .sort_values(ascending=False)
+    .head(10)
+    .reset_index(name='balls_faced')
+)
+
+partnerships['pair'] = partnerships['batsman'] + " & " + partnerships['non_striker']
+
+plt.figure(figsize=(12, 6))
+sns.barplot(x='balls_faced', y='pair', data=partnerships, palette='viridis')
 plt.title("Top 10 Batsman Partnerships by Balls Faced")
-plt.ylabel("Balls Together")
-plt.xticks(rotation=45)
+plt.xlabel("Balls Faced Together")
+plt.ylabel("Partnership")
+
+
+plt.tight_layout()
+plt.savefig("top_10_partnerships.png", dpi=300)  
 plt.show()
 ----------------------------------------------
 #9) Run Distribution by Match Format"
