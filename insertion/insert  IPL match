@@ -31,7 +31,7 @@ def insert_ipl_matches():
             venue = info.get("venue")
             city = info.get("city")
             gender = info.get("gender")
-            match_type = "LTL"  # Forcing LTL instead of T20
+            match_type = "IPL"
             competition = info.get("competition", None)
             result = info.get("outcome", {}).get("result", None)
 
