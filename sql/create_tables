@@ -1,5 +1,7 @@
 Create database Cricsheet_Matches;
 
+USE Cricsheet_Matches;
+
 CREATE TABLE test_matches (
     match_id VARCHAR(100) PRIMARY KEY,
     match_date DATE,
@@ -33,7 +35,6 @@ CREATE TABLE t20_matches (
     result VARCHAR(50)
 );
 
-USE Cricsheet_Matches;
 
 CREATE TABLE ipl_matches (
     match_id VARCHAR(100) PRIMARY KEY,
