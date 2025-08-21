@@ -49,7 +49,7 @@ Create interactive dashboards with filters for Format, Team, and Year.x
 
 **Python EDA**
 Run: eda/eda_analysis.ipynb
-Tools: Matplotlib, Seaborn, Plotly
+Tools: Matplotlib, Seaborn
 Plots: Run distribution, dismissal types, win margins, team performance comparisons.
 
 **Power BI Dashboard**
