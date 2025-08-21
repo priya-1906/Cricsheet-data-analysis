@@ -101,44 +101,29 @@ plt.title("Distribution of Runs per Delivery")
 plt.xlabel("Runs")
 plt.ylabel("Frequency")
 plt.show()
+
 ----------------------------------------------
-#7) Runs Scored by Position in Over"
-Analyze whether runs increase in the first few balls or last few of the over.##
+#7) Top 10 dismissed player#
 -----------------------------------------------
-plt.figure(figsize=(10, 6))
-sns.swarmplot(x='ball', y='runs_total', data=deliveries.sample(1000), size=3)
-plt.title("Run Distribution by Ball Number in Over")
-plt.xlabel("Ball in Over")
-plt.ylabel("Runs")
-plt.tight_layout()
-plt.savefig("run_by_ball_position.png")
+top_dismissed = deliveries[deliveries['player_dismissed'].notnull()]
+top_dismissed = top_dismissed['player_dismissed'].value_counts().head(10)
+
+top_dismissed.plot(kind='bar', color='crimson')
+plt.title("Top 10 Most Dismissed Players")
+plt.ylabel("Dismissals")
+plt.xticks(rotation=45)
 plt.show()
+
 ----------------------------------------------
 #8) Top 10 Batsman Partnerships by Balls Faced"
 This bar chart shows the top 10 batting partnerships based on the number of balls faced together.##
 -----------------------------------------------
-import seaborn as sns
-import matplotlib.pyplot as plt
+partnerships = deliveries.groupby(['batsman', 'non_striker']).size().sort_values(ascending=False).head(10)
 
-partnerships = (
-    deliveries.groupby(['batsman', 'non_striker'])
-    .size()
-    .sort_values(ascending=False)
-    .head(10)
-    .reset_index(name='balls_faced')
-)
-
-partnerships['pair'] = partnerships['batsman'] + " & " + partnerships['non_striker']
-
-plt.figure(figsize=(12, 6))
-sns.barplot(x='balls_faced', y='pair', data=partnerships, palette='viridis')
+partnerships.plot(kind='bar', figsize=(12,5))
 plt.title("Top 10 Batsman Partnerships by Balls Faced")
-plt.xlabel("Balls Faced Together")
-plt.ylabel("Partnership")
-
-
-plt.tight_layout()
-plt.savefig("top_10_partnerships.png", dpi=300)  
+plt.ylabel("Balls Together")
+plt.xticks(rotation=45)
 plt.show()
 ----------------------------------------------
 #9) Run Distribution by Match Format"
