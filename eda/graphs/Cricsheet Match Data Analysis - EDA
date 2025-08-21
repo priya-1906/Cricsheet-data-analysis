@@ -54,6 +54,9 @@ It provides insight into which bowlers have been most effective at dismissing ba
 import seaborn as sns
 plt.figure(figsize=(10, 6))
 
+wickets = deliveries[deliveries['player_dismissed'].notnull()]
+top_bowlers = wickets.groupby('bowler').size().sort_values(ascending=False).head(10)
+
 sns.barplot(x=top_bowlers.values, y=top_bowlers.index, palette='Oranges_r')
 plt.title("Top 10 Wicket Takers")
 plt.xlabel("Wickets")
